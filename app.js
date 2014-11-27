@@ -15,9 +15,21 @@ var processing = 'images/processing/';
 var uploaded = 'images/uploaded/';
 var original = 'images/original/';
 
+function getLocalIP() {
+    var os = require('os');
+    var IPv4, hostName;
+    hostName = os.hostname();
+    for (var i = 0; i < os.networkInterfaces().eth0.length; i++) {
+        if (os.networkInterfaces().eth0[i].family == 'IPv4') {
+            IPv4 = os.networkInterfaces().eth0[i].address;
+        }
+    }
+    return IPv4;
+}
+
 var options = {
   docRoot: root,
-  urlRoot: 'http://localhost:3000/',
+  urlRoot: 'http://' + getLocalIP() + ':3000/',
   stagingDir: staging,
   processDir: processing,
   uploadDir: uploaded,
