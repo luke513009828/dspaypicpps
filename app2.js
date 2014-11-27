@@ -82,7 +82,7 @@ app.configure(function() {
   picsee.initialize(options);
 });
 
-app.configure('development', function() {
+app.configure('production', function() {
   app.use(express.errorHandler());
 });
 
