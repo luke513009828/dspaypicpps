@@ -4,7 +4,7 @@
 var express = require('express'),
   http = require('http'),
   path = require('path'),
-  picsee = require('picsee');
+  picsee = require('./picsee');
 
 // Picsee options
 var root = __dirname + '/public/';
