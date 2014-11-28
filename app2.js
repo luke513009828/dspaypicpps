@@ -32,7 +32,7 @@ function getLocalIP() {
 
 var options = {
     docRoot: root,
-    urlRoot: 'http://' + getLocalIP() + ':3000/',
+    urlRoot: 'http://test.dspay.org:3000/',
     stagingDir: staging,
     processDir: processing,
     uploadDir: uploaded,
@@ -44,19 +44,6 @@ var options = {
                 h: null
             }
         }
-//        ,
-//        {
-//            'profile': {
-//                w: 200,
-//                h: null
-//            }
-//        },
-//        {
-//            'full': {
-//                w: null,
-//                h: null
-//            }/media/wangzheng_ext__/WebStormWorkspace/node_test
-//        }
     ],
     separator: '_',
     directories: 'single',
@@ -92,10 +79,6 @@ app.configure('production', function() {
  */
 app.get('/', function(req, res, next) {
     res.end('server is working');
-//  res.render('index', {
-//    title: 'Demo Photo Uploader/Cropper',
-//    results: false
-//  });
 });
 
 
@@ -104,43 +87,21 @@ app.get('/', function(req, res, next) {
  */
 app.post('/upload', function (req, res, next) {
     picsee.upload(req, res, function (err, results) {
-        if (err) res.end(0);
+        if (err) res.end('0');
 //        console.dir(results);
-
-        var original = results[0].original.name || false;
-        req.body.image = results[0].path;
-        req.body.original = results[0].original.name;
-        picsee.crop(req, res, function (err, results) {
-            if (err) res.end(0);
-            res.end(results[0].url);
-
-        });
-//        res.render('crop', {
-//          title: 'Crop or Save Photo',
-//          results: results || false
-//        });
-//        res.end('ok_:'+results[0].url);
+        if (results[0] == null || results[0].original == null) {
+            res.end('0');
+        } else {
+            var original = results[0].original.name || false;
+            req.body.image = results[0].path;
+            req.body.original = results[0].original.name;
+            picsee.crop(req, res, function (err, results) {
+                if (err) res.end('0');
+                res.end(results[0].url);
+            });
+        }
     });
 });
-
-/**
- * Handle Upload, or if err, return to Form
- */
-//app.post('/crop', function(req, res, next) {
-//  var original = req.body.original || false;
-//  picsee.crop(req, res, function(err, results) {
-//    if (err) res.send(err);
-//      res.end('ok_:'+results[0].url);
-////    var photos = {
-////      versions: results,
-////      original: picsee.getOriginal(original)
-////    };
-////    res.render('success', {
-////      title: 'Success!',
-////      results: photos || false
-////    });
-//  });
-//});
 
 http.createServer(app).listen(app.get('port'), function() {
   console.log('Express server listening on port ' + app.get('port'));
