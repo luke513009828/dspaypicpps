@@ -89,7 +89,7 @@ app.post('/upload', function (req, res, next) {
     picsee.upload(req, res, function (err, results) {
         if (err) res.end('0');
 //        console.dir(results);
-        if (results[0] == null || results[0].original == null) {
+        if (results == null || results[0] == null || results[0].original == null) {
             res.end('0');
         } else {
             var original = results[0].original.name || false;
